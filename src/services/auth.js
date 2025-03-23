@@ -33,7 +33,7 @@ const logout = () => {
     isLoggedIn: false,
   });
 
-  window.navigateTo("/");
+  window.navigateTo("/login");
 };
 
 const isLoggedIn = () => {
