@@ -11,18 +11,25 @@ export default class Router {
     this.root = document.getElementById("root") || document.body;
 
     window.addEventListener("DOMContentLoaded", () => this.handleRoute());
+    this.initEventListeners();
+    this.initClickHandler();
+  }
 
-    window.addEventListener("popstate", () => this.handleRoute());
+  initEventListeners() {}
 
+  initClickHandler() {
     document.addEventListener("click", (e) => {
-      if (
-        e.target.tagName === "A" &&
-        e.target.href.startsWith(window.location.origin)
-      ) {
+      if (e.target.tagName === "A") {
         e.preventDefault();
-        this.navigateTo(e.target.pathname);
+        this.handleClickLink(e);
       }
     });
+  }
+
+  handleClickLink() {}
+
+  getPath() {
+    return "/";
   }
 
   checkAccess(path) {
@@ -40,7 +47,7 @@ export default class Router {
   }
 
   handleRoute() {
-    const path = window.location.pathname;
+    const path = this.getPath();
     const { isLoggedIn } = store.getState();
 
     if (!this.checkAccess(path)) {
@@ -64,10 +71,9 @@ export default class Router {
     } else {
       this.root.innerHTML = page;
     }
+
+    window.scrollTo(0, 0);
   }
 
-  navigateTo(path) {
-    window.history.pushState({}, "", path);
-    this.handleRoute();
-  }
+  navigateTo() {}
 }
