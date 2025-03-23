@@ -10,7 +10,7 @@ const Header = ({ isLoggedIn }) => {
       return hashPath === path;
     }
 
-    return window.location.pathname === path;
+    return window.location.pathname.endsWith(path);
   };
 
   const navigationLinks = isLoggedIn

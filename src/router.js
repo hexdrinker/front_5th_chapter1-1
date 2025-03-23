@@ -5,6 +5,7 @@ export default class Router {
   routes = {};
   authRequired = ["/profile"];
   publicOnly = ["/login"];
+  basePath = "/front_5th_chapter1-1";
 
   constructor(routes) {
     this.routes = routes;

@@ -10,15 +10,26 @@ export default class HistoryRouter extends Router {
   }
 
   handleClickLink(e) {
-    this.navigateTo(e.target.pathname);
+    const pathname = e.target.pathname;
+    const path = pathname.startsWith(this.basePath)
+      ? pathname.slice(this.basePath.length)
+      : pathname;
+    this.navigateTo(path);
   }
 
   getPath() {
-    return window.location.pathname;
+    const fullPath = window.location.pathname;
+    return fullPath.startsWith(this.basePath)
+      ? fullPath.slice(this.basePath.length) || "/"
+      : fullPath;
   }
 
   navigateTo(path) {
-    window.history.pushState({}, "", path);
+    const fullPath = path.startsWith("/")
+      ? `${this.basePath}${path}`
+      : `${this.basePath}/${path}`;
+
+    window.history.pushState({}, "", fullPath);
     this.handleRoute();
   }
 }
