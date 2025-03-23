@@ -1,7 +1,17 @@
 import { logout } from "../services/auth.js";
 
 const Header = ({ isLoggedIn }) => {
-  const isActive = (path) => window.location.pathname === path;
+  const isActive = (path) => {
+    const isHashRouter = window.location.href.includes("index.hash.html");
+
+    if (isHashRouter) {
+      const hash = window.location.hash;
+      const hashPath = hash ? hash.substring(1) : "/";
+      return hashPath === path;
+    }
+
+    return window.location.pathname === path;
+  };
 
   const navigationLinks = isLoggedIn
     ? [
