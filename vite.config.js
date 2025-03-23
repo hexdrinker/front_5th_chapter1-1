@@ -8,4 +8,11 @@ export default defineConfig({
     exclude: ["**/e2e/**", "**/*.e2e.spec.js", "**/node_modules/**"],
   },
   base: process.env.NODE_ENV === "production" ? "/front_5th_chapter1-1/" : "/",
+  build: {
+    rollupOptions: {
+      input: {
+        main: "./index.hash.html",
+      },
+    },
+  },
 });
