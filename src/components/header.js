@@ -4,9 +4,15 @@ import { logout } from "../services/auth.js";
 const Header = createComponent(
   ({ isLoggedIn }) => {
     const isActive = (path) => {
-      return window.location.pathname.endsWith(path)
-        ? "text-blue-600 font-bold"
-        : "text-gray-600";
+      const isHashRouter = window.location.href.includes("index.hash.html");
+
+      if (isHashRouter) {
+        const hash = window.location.hash;
+        const hashPath = hash ? hash.substring(1) : "/";
+        return hashPath === path;
+      }
+
+      return window.location.pathname.endsWith(path);
     };
 
     const navigationLinks = isLoggedIn
@@ -33,7 +39,7 @@ const Header = createComponent(
                 <li>
                   <a 
                     href="${link.path}" 
-                    class="${isActive(link.path)}"
+                    class="${isActive(link.path) ? "text-blue-600 font-bold" : "text-gray-600"}"
                     ${link.id ? `id="${link.id}"` : ""}
                   >
                     ${link.text}
