@@ -2,15 +2,17 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { updateUser } from "../services/auth";
 import store from "../store";
+import { createComponent } from "../core/component";
 
-const ProfilePage = () => {
-  const { isLoggedIn, user } = store.getState();
-  const header = Header({ isLoggedIn });
-
-  const template = `
+const ProfilePage = createComponent(
+  () => {
+    const { isLoggedIn, user } = store.getState();
+    const header = Header({ isLoggedIn });
+    const footer = Footer();
+    return `
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
-        ${header.template}
+        ${header.html}
 
         <main class="p-4">
           <div class="bg-white p-8 rounded-lg shadow-md">
@@ -70,15 +72,16 @@ const ProfilePage = () => {
           </div>
         </main>
 
-        ${Footer()}
+        ${footer.html}
       </div>
     </div>
   `;
+  },
+  (container) => {
+    const { isLoggedIn } = store.getState();
+    Header({ isLoggedIn }).mount(container);
 
-  const init = () => {
-    header.init();
-
-    const profileForm = document.querySelector("#profile-form");
+    const profileForm = container.querySelector("#profile-form");
     if (profileForm) {
       profileForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -93,12 +96,7 @@ const ProfilePage = () => {
         });
       });
     }
-  };
-
-  return {
-    template,
-    init,
-  };
-};
+  },
+);
 
 export default ProfilePage;
