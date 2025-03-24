@@ -1,5 +1,5 @@
 import { defineConfig } from "vitest/config";
-
+import { resolve } from "path";
 export default defineConfig({
   test: {
     globals: true,
@@ -11,7 +11,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: "./index.hash.html",
+        main: resolve(__dirname, "index.html"),
+        hash: resolve(__dirname, "index.hash.html"),
+        notFound: resolve(__dirname, "404.html"),
       },
     },
   },

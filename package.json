@@ -19,7 +19,7 @@
     "test:e2e:report": "npx playwright show-report",
     "test:generate": "playwright codegen localhost:5173",
     "prepare": "husky",
-    "gh-pages": "vite build && cp dist/index.hash.html dist/index.html && rm dist/index.hash.html && gh-pages -d dist -b gh-pages -r https://github.com/hexdrinker/front_5th_chapter1-1.git"
+    "deploy": "pnpm run build && gh-pages -d dist"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
