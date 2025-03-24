@@ -1,12 +1,10 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { updateUser } from "../services/auth";
-import store from "../store";
 import { createComponent } from "../core/component";
 
 const ProfilePage = createComponent(
-  () => {
-    const { isLoggedIn, user } = store.getState();
+  ({ isLoggedIn, user }) => {
     const header = Header({ isLoggedIn });
     const footer = Footer();
     return `
@@ -77,17 +75,16 @@ const ProfilePage = createComponent(
     </div>
   `;
   },
-  (container) => {
-    const { isLoggedIn } = store.getState();
+  (container, { isLoggedIn }) => {
     Header({ isLoggedIn }).mount(container);
 
     const profileForm = container.querySelector("#profile-form");
     if (profileForm) {
       profileForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const username = document.getElementById("username").value;
-        const email = document.getElementById("email").value;
-        const bio = document.getElementById("bio").value;
+        const username = container.querySelector("#username").value;
+        const email = container.querySelector("#email").value;
+        const bio = container.querySelector("#bio").value;
 
         updateUser({
           username,

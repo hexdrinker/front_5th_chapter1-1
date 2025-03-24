@@ -2,12 +2,10 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import Post from "../components/post";
 import { MOCK_POSTS } from "../constants";
-import store from "../store";
 import { createComponent } from "../core/component";
 
 const HomePage = createComponent(
-  () => {
-    const { isLoggedIn } = store.getState();
+  ({ isLoggedIn }) => {
     const header = Header({ isLoggedIn });
     const footer = Footer();
     const posts = MOCK_POSTS.map(
@@ -36,8 +34,7 @@ const HomePage = createComponent(
       </div>
     `;
   },
-  (container) => {
-    const { isLoggedIn } = store.getState();
+  (container, { isLoggedIn }) => {
     Header({ isLoggedIn }).mount(container);
   },
 );

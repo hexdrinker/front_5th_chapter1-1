@@ -63,7 +63,8 @@ export default class Router {
     }
 
     const Component = this.routes[path] || this.routes["404"];
-    const component = Component();
+    // 페이지마다 글로벌 상태 공유
+    const component = Component({ ...store.getState() });
 
     this.root.innerHTML = component.html;
     component.mount(this.root);
