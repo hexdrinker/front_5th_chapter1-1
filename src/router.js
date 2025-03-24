@@ -14,6 +14,8 @@ export default class Router {
     window.addEventListener("DOMContentLoaded", () => this.handleRoute());
     this.initEventListeners();
     this.initClickHandler();
+
+    store.subscribe(() => this.handleRoute());
   }
 
   initEventListeners() {}

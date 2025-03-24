@@ -10,12 +10,7 @@ const login = ({ username, email, bio }) => {
   };
 
   localStorage.setItem(AUTH_KEY, JSON.stringify(userData));
-
-  store.setState({
-    user: userData,
-    isLoggedIn: true,
-  });
-
+  store.mutations.login(userData);
   window.navigateTo("/");
 
   return userData;
@@ -28,10 +23,7 @@ const logout = () => {
   }
   localStorage.removeItem(AUTH_KEY);
 
-  store.setState({
-    user: null,
-    isLoggedIn: false,
-  });
+  store.mutations.logout();
 
   window.navigateTo("/login");
 };
@@ -51,28 +43,19 @@ const updateUser = ({ username, email, bio }) => {
     bio,
   };
 
-  store.setState({
-    user: userData,
-  });
-
+  store.mutations.updateUser(userData);
   localStorage.setItem(AUTH_KEY, JSON.stringify(userData));
 };
 
 const keepAuth = () => {
   const userData = localStorage.getItem(AUTH_KEY);
   if (!userData) {
-    store.setState({
-      user: null,
-      isLoggedIn: false,
-    });
+    store.mutations.logout();
     return;
   }
 
   const parsedUserData = JSON.parse(userData);
-  store.setState({
-    user: parsedUserData,
-    isLoggedIn: true,
-  });
+  store.mutations.login(parsedUserData);
 
   return parsedUserData;
 };
