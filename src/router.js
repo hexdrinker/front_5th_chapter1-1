@@ -60,18 +60,11 @@ export default class Router {
       return;
     }
 
-    const component = this.routes[path] || this.routes["404"];
-    const page = component();
+    const Component = this.routes[path] || this.routes["404"];
+    const component = Component();
 
-    if (page.template) {
-      this.root.innerHTML = page.template;
-
-      if (page.init) {
-        page.init();
-      }
-    } else {
-      this.root.innerHTML = page;
-    }
+    this.root.innerHTML = component.html;
+    component.mount(this.root);
 
     window.scrollTo(0, 0);
   }
