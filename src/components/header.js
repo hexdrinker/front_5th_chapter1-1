@@ -1,8 +1,12 @@
 import { createComponent } from "../core/component.js";
 import { logout } from "../services/auth.js";
 
-const Header = createComponent(
-  ({ isLoggedIn }) => {
+const Header = createComponent({
+  name: "Header",
+  defaultState: {
+    onLogout: null,
+  },
+  render: ({ isLoggedIn }) => {
     const isActive = (path) => {
       const isHashRouter = window.location.href.includes("index.hash.html");
 
@@ -25,7 +29,6 @@ const Header = createComponent(
           { path: "/", text: "홈" },
           { path: "/login", text: "로그인" },
         ];
-
     return `
       <header class="bg-blue-600 text-white p-4 sticky top-0">
         <h1 class="text-2xl font-bold">항해플러스</h1>
@@ -52,15 +55,22 @@ const Header = createComponent(
       </nav>
     `;
   },
-  (container) => {
+  onMount: (container, { onLogout }) => {
     const logoutBtn = container.querySelector("#logout");
+    onLogout = (e) => {
+      e.preventDefault();
+      logout();
+    };
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
-      });
+      logoutBtn.addEventListener("click", onLogout);
     }
   },
-);
+  onUnmount: (container, { onLogout }) => {
+    const logoutBtn = container.querySelector("#logout");
+    if (logoutBtn) {
+      logoutBtn.removeEventListener("click", onLogout);
+    }
+  },
+});
 
 export default Header;

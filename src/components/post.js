@@ -1,7 +1,8 @@
 import { createComponent } from "../core/component";
 
-const Post = createComponent(
-  ({ content, createdAt, thumbnail, author }) => {
+const Post = createComponent({
+  name: "Post",
+  render: ({ content, createdAt, thumbnail, author }) => {
     return `
       <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center mb-2">
@@ -20,7 +21,8 @@ const Post = createComponent(
       </div>
     `;
   },
-  () => {},
-);
+  onMount: () => {},
+  onUnmount: () => {},
+});
 
 export default Post;

@@ -1,8 +1,12 @@
 import { login } from "../services/auth";
 import { createComponent } from "../core/component";
 
-const LoginPage = createComponent(
-  () => {
+const LoginPage = createComponent({
+  name: "LoginPage",
+  defaultState: {
+    onLogin: null,
+  },
+  render: () => {
     return `
       <main class="bg-gray-100 flex items-center justify-center min-h-screen">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -27,17 +31,23 @@ const LoginPage = createComponent(
       </main>
     `;
   },
-  (container) => {
+  onMount: (container, { onLogin }) => {
     const loginForm = container.querySelector("#login-form");
-
+    onLogin = (e) => {
+      e.preventDefault();
+      const username = container.querySelector("#username").value;
+      login({ username, bio: "", email: "" });
+    };
     if (loginForm) {
-      loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const username = container.querySelector("#username").value;
-        login({ username, bio: "", email: "" });
-      });
+      loginForm.addEventListener("submit", onLogin);
     }
   },
-);
+  onUnmount: (container, { onLogin }) => {
+    const loginForm = container.querySelector("#login-form");
+    if (loginForm) {
+      loginForm.removeEventListener("submit", onLogin);
+    }
+  },
+});
 
 export default LoginPage;

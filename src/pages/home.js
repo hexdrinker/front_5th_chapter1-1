@@ -4,19 +4,19 @@ import Post from "../components/post";
 import { MOCK_POSTS } from "../constants";
 import { createComponent } from "../core/component";
 
-const HomePage = createComponent(
-  ({ isLoggedIn }) => {
-    const header = Header({ isLoggedIn });
-    const footer = Footer();
-    const posts = MOCK_POSTS.map(
+const HomePage = createComponent({
+  name: "HomePage",
+  render: ({ isLoggedIn, children }) => {
+    children.header = Header({ isLoggedIn });
+    children.footer = Footer();
+    children.posts = MOCK_POSTS.map(
       ({ content, createdAt, thumbnail, author }) =>
-        Post({ content, createdAt, thumbnail, author }).html,
+        Post({ content, createdAt, thumbnail, author }),
     );
-
     return `
       <div class="bg-gray-100 min-h-screen flex justify-center">
         <div class="max-w-md w-full">
-          ${header.html}
+          ${children.header.html}
 
           <main class="p-4">
             <div class="mb-4 bg-white rounded-lg shadow p-4">
@@ -25,18 +25,21 @@ const HomePage = createComponent(
             </div>
 
             <div class="space-y-4">
-              ${posts.join("")}
+              ${children.posts.map((post) => post.html).join("")}
             </div>
           </main>
 
-          ${footer.html}
+          ${children.footer.html}
         </div>
       </div>
     `;
   },
-  (container, { isLoggedIn }) => {
-    Header({ isLoggedIn }).mount(container);
+  onMount: (container, { children }) => {
+    children.header.mount(container);
+    children.footer.mount(container);
+    children.posts.forEach((post) => post.mount(container));
   },
-);
+  onUnmount: () => {},
+});
 
 export default HomePage;

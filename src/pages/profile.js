@@ -3,15 +3,18 @@ import Footer from "../components/footer";
 import { updateUser } from "../services/auth";
 import { createComponent } from "../core/component";
 
-const ProfilePage = createComponent(
-  ({ isLoggedIn, user }) => {
-    const header = Header({ isLoggedIn });
-    const footer = Footer();
+const ProfilePage = createComponent({
+  name: "ProfilePage",
+  defaultState: {
+    onSubmit: null,
+  },
+  render: ({ isLoggedIn, user, children }) => {
+    children.header = Header({ isLoggedIn });
+    children.footer = Footer();
     return `
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
-        ${header.html}
-
+        ${children.header.html}
         <main class="p-4">
           <div class="bg-white p-8 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold text-center text-blue-600 mb-8">
@@ -69,31 +72,36 @@ const ProfilePage = createComponent(
             </form>
           </div>
         </main>
-
-        ${footer.html}
+        ${children.footer.html}
       </div>
     </div>
   `;
   },
-  (container, { isLoggedIn }) => {
-    Header({ isLoggedIn }).mount(container);
-
+  onMount: (container, { children, onSubmit }) => {
+    children.header.mount(container);
+    children.footer.mount(container);
+    onSubmit = (e) => {
+      e.preventDefault();
+      const username = container.querySelector("#username").value;
+      const email = container.querySelector("#email").value;
+      const bio = container.querySelector("#bio").value;
+      updateUser({
+        username,
+        email,
+        bio,
+      });
+    };
     const profileForm = container.querySelector("#profile-form");
     if (profileForm) {
-      profileForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const username = container.querySelector("#username").value;
-        const email = container.querySelector("#email").value;
-        const bio = container.querySelector("#bio").value;
-
-        updateUser({
-          username,
-          email,
-          bio,
-        });
-      });
+      profileForm.addEventListener("submit", onSubmit);
     }
   },
-);
+  onUnmount: (container, { onSubmit }) => {
+    const profileForm = container.querySelector("#profile-form");
+    if (profileForm) {
+      profileForm.removeEventListener("submit", onSubmit);
+    }
+  },
+});
 
 export default ProfilePage;
