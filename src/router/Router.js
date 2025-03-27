@@ -22,8 +22,28 @@ export default class Router {
     });
     this.initEventListeners();
     this.initClickHandler();
+    this.prevState = { ...store.getState() };
 
-    store.subscribe(() => this.handleRoute());
+    const handleAuthStateChange = () => {
+      const currentState = store.getState();
+
+      if (this.prevState.isLoggedIn !== currentState.isLoggedIn) {
+        console.log(
+          "detect auth state changing:",
+          currentState.isLoggedIn ? "loggedIn" : "loggedOut",
+        );
+
+        if (currentState.isLoggedIn) {
+          this.navigateTo("/");
+        } else {
+          this.navigateTo("/login");
+        }
+
+        this.prevState = { ...currentState };
+      }
+    };
+
+    store.subscribe(handleAuthStateChange);
   }
 
   useGuard(guardFn) {
@@ -61,14 +81,14 @@ export default class Router {
       return;
     }
 
-    const isSamePath = this.currentPath === path;
-    this.currentPath = path;
+    // const isSamePath = this.currentPath === path;
+    // this.currentPath = path;
 
-    if (isSamePath && this.currentComponent) {
-      // url 접근이나 refresh 시 리렌더링 방지
-      console.log("skip re-render");
-      return;
-    }
+    // if (isSamePath && this.currentComponent) {
+    //   // url 접근이나 refresh 시 리렌더링 방지
+    //   console.log("skip re-render");
+    //   return;
+    // }
 
     if (this.currentComponent) {
       console.log("Unmount previous page");

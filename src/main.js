@@ -18,7 +18,7 @@ if (!document.getElementById("root")) {
   document.body.appendChild(root);
 }
 
+keepAuth();
 const router = new HistoryRouter(routes);
 
 window.navigateTo = (path) => router.navigateTo(path);
-keepAuth();

@@ -18,7 +18,7 @@ if (!document.getElementById("root")) {
   document.body.appendChild(root);
 }
 
+keepAuth();
 const hashRouter = new HashRouter(routes);
 
 window.navigateTo = (path) => hashRouter.navigateTo(path);
-keepAuth();

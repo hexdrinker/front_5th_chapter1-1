@@ -11,7 +11,6 @@ const login = ({ username, email, bio }) => {
 
   localStorage.setItem(AUTH_KEY, JSON.stringify(userData));
   store.mutations.login(userData);
-  window.navigateTo("/");
 
   return userData;
 };
@@ -24,8 +23,6 @@ const logout = () => {
   localStorage.removeItem(AUTH_KEY);
 
   store.mutations.logout();
-
-  window.navigateTo("/login");
 };
 
 const isLoggedIn = () => {
