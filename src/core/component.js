@@ -38,13 +38,13 @@ export function createComponent(options = {}) {
       },
 
       unmount: () => {
-        console.log(`${name} is unmounted.`);
         // 자식부터 unmount
         Object.values(children).forEach((child) => {
           if (child && child.unmount && typeof child.unmount === "function") {
             child.unmount();
           }
         });
+        console.log(`${name} is unmounted.`);
         onUnmount?.(container, {
           ...currentProps,
           ...currentState,
