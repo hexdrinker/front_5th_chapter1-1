@@ -1,4 +1,4 @@
-import HashRouter from "./HashRouter";
+import HashRouter from "./router/HashRouter";
 import HomePage from "./pages/home";
 import ProfilePage from "./pages/profile";
 import LoginPage from "./pages/login";

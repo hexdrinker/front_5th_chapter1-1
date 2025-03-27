@@ -1,4 +1,4 @@
-import HistoryRouter from "./HistoryRouter";
+import HistoryRouter from "./router/HistoryRouter";
 import HomePage from "./pages/home";
 import ProfilePage from "./pages/profile";
 import LoginPage from "./pages/login";

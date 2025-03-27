@@ -41,7 +41,6 @@ export function createComponent(options = {}) {
         console.log(`${name} is unmounted.`);
         // 자식부터 unmount
         Object.values(children).forEach((child) => {
-          console.log(child);
           if (child && child.unmount && typeof child.unmount === "function") {
             child.unmount();
           }
@@ -51,6 +50,7 @@ export function createComponent(options = {}) {
           ...currentState,
           children,
         });
+        // state 초기화
         currentState = { ...defaultState };
       },
     };

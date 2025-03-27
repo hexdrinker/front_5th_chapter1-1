@@ -1,4 +1,4 @@
-import Router from "./router";
+import Router from "./Router";
 
 export default class HistoryRouter extends Router {
   constructor(routes) {

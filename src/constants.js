@@ -33,4 +33,7 @@ const MOCK_POSTS = [
   },
 ];
 
-export { MOCK_POSTS };
+const PUBLIC_ONLY_PATH = ["/login"];
+const AUTH_REQUIRED_PATH = ["/profile"];
+
+export { MOCK_POSTS, PUBLIC_ONLY_PATH, AUTH_REQUIRED_PATH };
