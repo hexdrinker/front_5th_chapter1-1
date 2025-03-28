@@ -33,10 +33,9 @@ export default class Router {
           currentState.isLoggedIn ? "loggedIn" : "loggedOut",
         );
 
-        if (currentState.isLoggedIn) {
-          this.navigateTo("/");
-        } else {
-          this.navigateTo("/login");
+        const targetPath = currentState.isLoggedIn ? "/" : "/login";
+        if (this.getPath() !== targetPath) {
+          this.navigateTo(targetPath);
         }
 
         this.prevState = { ...currentState };
@@ -71,6 +70,14 @@ export default class Router {
   handleRoute() {
     const path = this.getPath();
 
+    const isSamePath = this.currentPath === path;
+    this.currentPath = path;
+
+    if (isSamePath && this.currentComponent) {
+      console.log("skip re-render");
+      return;
+    }
+
     const guardResult = this.guard.check(path, {
       router: this,
       state: store.getState(),
@@ -81,17 +88,8 @@ export default class Router {
       return;
     }
 
-    // const isSamePath = this.currentPath === path;
-    // this.currentPath = path;
-
-    // if (isSamePath && this.currentComponent) {
-    //   // url 접근이나 refresh 시 리렌더링 방지
-    //   console.log("skip re-render");
-    //   return;
-    // }
-
     if (this.currentComponent) {
-      console.log("Unmount previous page");
+      console.log("-------------------");
       this.currentComponent.unmount();
       this.currentComponent = null;
     }

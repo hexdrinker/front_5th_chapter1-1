@@ -10,6 +10,9 @@ export default class HashRouter extends Router {
   }
 
   handleClickLink(e) {
+    if (!e.target.getAttribute("href").includes("/")) {
+      return;
+    }
     this.navigateTo(e.target.getAttribute("href"));
   }
 
@@ -19,7 +22,8 @@ export default class HashRouter extends Router {
   }
 
   navigateTo(path) {
+    if (this.getPath() === path) return;
+
     window.location.hash = path;
-    this.handleRoute();
   }
 }
